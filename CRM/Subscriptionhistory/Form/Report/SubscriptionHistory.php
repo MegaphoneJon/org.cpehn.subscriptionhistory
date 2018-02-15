@@ -18,6 +18,10 @@ class CRM_Subscriptionhistory_Form_Report_SubscriptionHistory extends CRM_Report
             'required' => TRUE,
             'default' => TRUE,
           ),
+          'is_deceased' => array(
+            'title' => ts('Is Deceased?'),
+            'default' => TRUE,
+          ),
           'id' =>
           array(
             'no_display' => TRUE,
@@ -28,6 +32,12 @@ class CRM_Subscriptionhistory_Form_Report_SubscriptionHistory extends CRM_Report
           'sort_name' => array(
             'title' => ts('Contact Name'),
             'operator' => 'like',
+          ),
+          'is_deceased' => array(
+            'title' => ts('Is Deceased'),
+            'type' => CRM_Utils_Type::T_ENUM,
+            'operatorType' => CRM_Report_Form::OP_SELECT,
+            'options' => array('' => '-- select Status --', '1' => 'Deceased','0' => 'Not Deceased')
           ),
           'id' => array(
             'no_display' => TRUE,
