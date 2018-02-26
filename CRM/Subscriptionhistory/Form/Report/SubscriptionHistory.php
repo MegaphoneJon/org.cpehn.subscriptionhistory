@@ -8,26 +8,13 @@ class CRM_Subscriptionhistory_Form_Report_SubscriptionHistory extends CRM_Report
 
   protected $_customGroupGroupBy = FALSE; 
 
+  protected $_customGroupExtends = array('Contact', 'Individual', 'Household', 'Organization');
+  
   function __construct() {
     $this->_columns = array(
       'civicrm_contact' => array(
         'dao' => 'CRM_Contact_DAO_Contact',
-        'fields' => array(
-          'sort_name' => array(
-            'title' => ts('Contact Name'),
-            'required' => TRUE,
-            'default' => TRUE,
-          ),
-          'is_deceased' => array(
-            'title' => ts('Is Deceased?'),
-            'default' => TRUE,
-          ),
-          'id' =>
-          array(
-            'no_display' => TRUE,
-            'required' => TRUE,
-          ),
-        ),
+        'fields' => $this->getBasicContactFields(),
         'filters' => array(
           'sort_name' => array(
             'title' => ts('Contact Name'),
@@ -41,6 +28,14 @@ class CRM_Subscriptionhistory_Form_Report_SubscriptionHistory extends CRM_Report
           ),
           'id' => array(
             'no_display' => TRUE,
+          ),
+        ),
+        'order_bys' => array(
+          'sort_name' => array(
+            'title' => ts('Last Name, First Name'),
+            'default' => '1',
+            'default_weight' => '0',
+            'default_order' => 'ASC',
           ),
         ),
         'grouping' => 'contact-fields',
@@ -266,6 +261,13 @@ class CRM_Subscriptionhistory_Form_Report_SubscriptionHistory extends CRM_Report
         );
         $rows[$rowNum]['civicrm_contact_sort_name_link'] = $url;
         $rows[$rowNum]['civicrm_contact_sort_name_hover'] = ts("View Contact Summary for this Contact.");
+        $entryFound = TRUE;
+      }
+
+      if (array_key_exists('civicrm_address_state_province_id', $row)) {
+        if ($value = $row['civicrm_address_state_province_id']) {
+          $rows[$rowNum]['civicrm_address_state_province_id'] = CRM_Core_PseudoConstant::stateProvince($value, FALSE);
+        }
         $entryFound = TRUE;
       }
 
