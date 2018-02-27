@@ -278,17 +278,13 @@ class CRM_Subscriptionhistory_Form_Report_SubscriptionHistory extends CRM_Report
         $rows[$rowNum]['civicrm_contact_sort_name_hover'] = ts("View Contact Summary for this Contact.");
         $entryFound = TRUE;
       }
-      
+
       if (array_key_exists('civicrm_address_state_province_id', $row)) {
         if ($colVal = $row['civicrm_address_state_province_id']) {
-          dpm($rows[$rowNum]['civicrm_address_state_province_id']);
           $rows[$rowNum]['civicrm_address_state_province_id'] = CRM_Core_PseudoConstant::stateProvinceAbbreviation($colVal, FALSE);
-          dpm($rows[$rowNum]['civicrm_address_state_province_id']);
         }
         $entryFound = TRUE;
       }
-
-      // $entryFound = $this->alterDisplayAddressFields($row, $rows, $rowNum, 'org.cpehn.subscriptionhistory/subscriptionhistory', 'List subscription history') ? TRUE : $entryFound;
 
       if (!$entryFound) {
         break;
