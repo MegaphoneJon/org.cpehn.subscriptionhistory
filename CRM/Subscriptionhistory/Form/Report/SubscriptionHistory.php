@@ -40,6 +40,21 @@ class CRM_Subscriptionhistory_Form_Report_SubscriptionHistory extends CRM_Report
         ),
         'grouping' => 'contact-fields',
       ),
+      'civicrm_address' => array(
+        'dao' => 'CRM_Core_DAO_Address',
+        'fields' => array(
+          'street_address' => NULL,
+          'city' => NULL,
+          'postal_code' => NULL,
+          'state_province_id' => array(
+            'title' => ts('State/Province'),
+          ),
+          'country_id' => array(
+            'title' => ts('Country'),
+          ),
+        ),
+        'grouping' => 'contact-fields',
+      ),
       'civicrm_group' => array(
         'dao' => 'CRM_Contact_DAO_GroupContact',
         'fields' => array(
@@ -263,15 +278,17 @@ class CRM_Subscriptionhistory_Form_Report_SubscriptionHistory extends CRM_Report
         $rows[$rowNum]['civicrm_contact_sort_name_hover'] = ts("View Contact Summary for this Contact.");
         $entryFound = TRUE;
       }
-
+      
       if (array_key_exists('civicrm_address_state_province_id', $row)) {
-        if ($value = $row['civicrm_address_state_province_id']) {
-          $rows[$rowNum]['civicrm_address_state_province_id'] = CRM_Core_PseudoConstant::stateProvince($value, FALSE);
+        if ($colVal = $row['civicrm_address_state_province_id']) {
+          dpm($rows[$rowNum]['civicrm_address_state_province_id']);
+          $rows[$rowNum]['civicrm_address_state_province_id'] = CRM_Core_PseudoConstant::stateProvinceAbbreviation($colVal, FALSE);
+          dpm($rows[$rowNum]['civicrm_address_state_province_id']);
         }
         $entryFound = TRUE;
       }
 
-      $entryFound = $this->alterDisplayAddressFields($row, $rows, $rowNum, 'org.cpehn.subscriptionhistory/subscriptionhistory', 'List subscription history') ? TRUE : $entryFound;
+      // $entryFound = $this->alterDisplayAddressFields($row, $rows, $rowNum, 'org.cpehn.subscriptionhistory/subscriptionhistory', 'List subscription history') ? TRUE : $entryFound;
 
       if (!$entryFound) {
         break;
