@@ -44,6 +44,9 @@ class CRM_Subscriptionhistory_Form_Report_SubscriptionHistory extends CRM_Report
         'dao' => 'CRM_Core_DAO_Address',
         'fields' => array(
           'street_address' => NULL,
+          'supplemental_address_1' => NULL,
+          'supplemental_address_2' => NULL,
+          'supplemental_address_3' => NULL,
           'city' => NULL,
           'postal_code' => NULL,
           'state_province_id' => array(
@@ -97,14 +100,14 @@ class CRM_Subscriptionhistory_Form_Report_SubscriptionHistory extends CRM_Report
           'status' => array(
             'title' => ts('Subscription Status'),
             'type' => CRM_Utils_Type::T_ENUM,
-            'operatorType' => CRM_Report_Form::OP_SELECT,
-            'options' => array('' => '-- select Status --', 'Added' => 'Added','Removed' => 'Removed', 'Pending' => 'Pending', 'Deleted' => 'Deleted')
+            'operatorType' => CRM_Report_Form::OP_MULTISELECT,
+            'options' => array('Added' => 'Added','Removed' => 'Removed', 'Pending' => 'Pending', 'Deleted' => 'Deleted')
           ),
           'method' => array(
             'title' => ts('Subscription Method'),
             'type' => CRM_Utils_Type::T_ENUM,
-            'operatorType' => CRM_Report_Form::OP_SELECT,
-            'options' => array('' => '-- select Method --', 'Admin' => 'Admin', 'Email' => 'Email', 'Web' => 'Web', 'API' => 'API' ),
+            'operatorType' => CRM_Report_Form::OP_MULTISELECT,
+            'options' => array('Admin' => 'Admin', 'Email' => 'Email', 'Web' => 'Web', 'API' => 'API' ),
           ),
         ),
         'grouping' => 'group-fields',
