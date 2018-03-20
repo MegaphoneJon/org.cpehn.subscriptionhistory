@@ -178,7 +178,9 @@ class CRM_Subscriptionhistory_Form_Report_SubscriptionHistory extends CRM_Report
   }
 
   function where() {
-    $clauses = array();
+    $clauses = array(
+      "{$this->_aliases['civicrm_contact']}.is_deleted = 0 ",
+    );
     foreach ($this->_columns as $tableName => $table) {
       if (array_key_exists('filters', $table)) {
         foreach ($table['filters'] as $fieldName => $field) {
