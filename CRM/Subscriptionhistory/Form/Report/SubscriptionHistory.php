@@ -94,6 +94,12 @@ class CRM_Subscriptionhistory_Form_Report_SubscriptionHistory extends CRM_Report
         'fields' => array('email' => NULL),
         'grouping' => 'contact-fields',
       ),
+      'civicrm_phone' => array(
+        'dao' => 'CRM_Core_DAO_Phone',
+        'fields' => array('phone' => NULL),
+        'grouping' => 'contact-fields',
+      ),
+
     ) + $this->addAddressFields(FALSE, TRUE);
     parent::__construct();
   }
@@ -151,6 +157,7 @@ class CRM_Subscriptionhistory_Form_Report_SubscriptionHistory extends CRM_Report
                         {$this->_aliases['civicrm_email']}.is_primary = 1\n";
     }
 
+    $this->addPhoneFromClause();
     $this->addAddressFromClause();
   }
 
