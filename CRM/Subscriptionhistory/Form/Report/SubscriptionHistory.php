@@ -88,6 +88,14 @@ class CRM_Subscriptionhistory_Form_Report_SubscriptionHistory extends CRM_Report
           ),
         ),
         'grouping' => 'group-fields',
+        'order_bys' => [
+          'date' => [
+            'title' => ts('Subscription Date'),
+            'default' => TRUE,
+            'default_weight' => '0',
+            'default_order' => 'DESC',
+          ],
+        ],
       ),
       'civicrm_email' => array(
         'dao' => 'CRM_Core_DAO_Email',
@@ -200,10 +208,6 @@ class CRM_Subscriptionhistory_Form_Report_SubscriptionHistory extends CRM_Report
 
   function groupBy() {
     $this->_groupBy = " GROUP BY {$this->_aliases['civicrm_contact']}.id, {$this->_aliases['civicrm_group']}.id";
-  }
-
-  function orderBy() {
-    $this->_orderBy = " ORDER BY {$this->_aliases['civicrm_contact']}.sort_name ASC, {$this->_aliases['civicrm_subscription_history']}.date DESC";
   }
 
   function postProcess() {
