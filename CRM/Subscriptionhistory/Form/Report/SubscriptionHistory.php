@@ -78,14 +78,6 @@ class CRM_Subscriptionhistory_Form_Report_SubscriptionHistory extends CRM_Report
           ),
         ),
         'grouping' => 'group-fields',
-        'order_bys' => [
-          'group_id' => [
-            'title' => ts('Group'),
-            'default' => '0',
-            'default_weight' => '1',
-            'default_order' => 'ASC',
-          ],
-        ],
       ),
       'civicrm_subscription_history' => array(
         'dao' => 'CRM_Contact_DAO_Contact',
@@ -129,6 +121,12 @@ class CRM_Subscriptionhistory_Form_Report_SubscriptionHistory extends CRM_Report
         ),
         'grouping' => 'group-fields',
         'order_bys' => [
+          'group_id' => [
+            'title' => ts('Group'),
+            'default' => '0',
+            'default_weight' => '1',
+            'default_order' => 'ASC',
+          ],
           'date' => [
             'title' => ts('Subscription Date'),
             'default' => TRUE,
