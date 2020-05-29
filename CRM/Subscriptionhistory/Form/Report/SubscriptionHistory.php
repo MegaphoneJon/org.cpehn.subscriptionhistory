@@ -8,29 +8,52 @@ class CRM_Subscriptionhistory_Form_Report_SubscriptionHistory extends CRM_Report
 
   protected $_customGroupGroupBy = FALSE; 
 
+  protected $_customGroupExtends = array('Contact', 'Individual', 'Household', 'Organization');
+  
   function __construct() {
     $this->_columns = array(
       'civicrm_contact' => array(
         'dao' => 'CRM_Contact_DAO_Contact',
-        'fields' => array(
-          'sort_name' => array(
-            'title' => ts('Contact Name'),
-            'required' => TRUE,
-            'default' => TRUE,
-          ),
-          'id' =>
-          array(
-            'no_display' => TRUE,
-            'required' => TRUE,
-          ),
-        ),
+        'fields' => $this->getBasicContactFields(),
         'filters' => array(
           'sort_name' => array(
             'title' => ts('Contact Name'),
             'operator' => 'like',
           ),
+          'is_deceased' => array(
+            'title' => ts('Is Deceased'),
+            'type' => CRM_Utils_Type::T_ENUM,
+            'operatorType' => CRM_Report_Form::OP_SELECT,
+            'options' => array('' => '-- select Status --', '1' => 'Deceased','0' => 'Not Deceased')
+          ),
           'id' => array(
             'no_display' => TRUE,
+          ),
+        ),
+        'order_bys' => array(
+          'sort_name' => array(
+            'title' => ts('Last Name, First Name'),
+            'default' => '1',
+            'default_weight' => '0',
+            'default_order' => 'ASC',
+          ),
+        ),
+        'grouping' => 'contact-fields',
+      ),
+      'civicrm_address' => array(
+        'dao' => 'CRM_Core_DAO_Address',
+        'fields' => array(
+          'street_address' => NULL,
+          'supplemental_address_1' => NULL,
+          'supplemental_address_2' => NULL,
+          'supplemental_address_3' => NULL,
+          'city' => NULL,
+          'postal_code' => NULL,
+          'state_province_id' => array(
+            'title' => ts('State/Province'),
+          ),
+          'country_id' => array(
+            'title' => ts('Country'),
           ),
         ),
         'grouping' => 'contact-fields',
@@ -77,14 +100,14 @@ class CRM_Subscriptionhistory_Form_Report_SubscriptionHistory extends CRM_Report
           'status' => array(
             'title' => ts('Subscription Status'),
             'type' => CRM_Utils_Type::T_ENUM,
-            'operatorType' => CRM_Report_Form::OP_SELECT,
-            'options' => array('' => '-- select Status --', 'Added' => 'Added','Removed' => 'Removed', 'Pending' => 'Pending', 'Deleted' => 'Deleted')
+            'operatorType' => CRM_Report_Form::OP_MULTISELECT,
+            'options' => array('Added' => 'Added','Removed' => 'Removed', 'Pending' => 'Pending', 'Deleted' => 'Deleted')
           ),
           'method' => array(
             'title' => ts('Subscription Method'),
             'type' => CRM_Utils_Type::T_ENUM,
-            'operatorType' => CRM_Report_Form::OP_SELECT,
-            'options' => array('' => '-- select Method --', 'Admin' => 'Admin', 'Email' => 'Email', 'Web' => 'Web', 'API' => 'API' ),
+            'operatorType' => CRM_Report_Form::OP_MULTISELECT,
+            'options' => array('Admin' => 'Admin', 'Email' => 'Email', 'Web' => 'Web', 'API' => 'API' ),
           ),
         ),
         'grouping' => 'group-fields',
@@ -163,7 +186,9 @@ class CRM_Subscriptionhistory_Form_Report_SubscriptionHistory extends CRM_Report
   }
 
   function where() {
-    $clauses = array();
+    $clauses = array(
+      "{$this->_aliases['civicrm_contact']}.is_deleted = 0 ",
+    );
     foreach ($this->_columns as $tableName => $table) {
       if (array_key_exists('filters', $table)) {
         foreach ($table['filters'] as $fieldName => $field) {
@@ -263,7 +288,12 @@ class CRM_Subscriptionhistory_Form_Report_SubscriptionHistory extends CRM_Report
         $entryFound = TRUE;
       }
 
-      $entryFound = $this->alterDisplayAddressFields($row, $rows, $rowNum, 'org.cpehn.subscriptionhistory/subscriptionhistory', 'List subscription history') ? TRUE : $entryFound;
+      if (array_key_exists('civicrm_address_state_province_id', $row)) {
+        if ($colVal = $row['civicrm_address_state_province_id']) {
+          $rows[$rowNum]['civicrm_address_state_province_id'] = CRM_Core_PseudoConstant::stateProvinceAbbreviation($colVal, FALSE);
+        }
+        $entryFound = TRUE;
+      }
 
       if (!$entryFound) {
         break;
