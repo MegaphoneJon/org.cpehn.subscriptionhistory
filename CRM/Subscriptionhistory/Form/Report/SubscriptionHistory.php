@@ -260,8 +260,9 @@ class CRM_Subscriptionhistory_Form_Report_SubscriptionHistory extends CRM_Report
     $sql = $this->buildQuery(TRUE);
 
     $rows = array();
+    CRM_Core_DAO::disableFullGroupByMode();
     $this->buildRows($sql, $rows);
-
+    CRM_Core_DAO::reenableFullGroupByMode();
     $this->formatDisplay($rows);
     $this->doTemplateAssignment($rows);
     $this->endPostProcess($rows);
