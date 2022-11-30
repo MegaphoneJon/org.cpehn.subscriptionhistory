@@ -70,6 +70,7 @@ class CRM_Subscriptionhistory_Form_Report_SubscriptionHistory extends CRM_Report
         'fields' => array(
           'date' => array(
             'title' => ts('Subscription Date'),
+            'type' => CRM_Utils_Type::T_DATE,
             'required' => TRUE,
             'default' => TRUE,
           ),
