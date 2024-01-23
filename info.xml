@@ -12,10 +12,19 @@
   <version>1.1</version>
   <develStage>stable</develStage>
   <compatibility>
-    <ver>5.25</ver>
+    <ver>5.45</ver>
   </compatibility>
   <comments>This report was originally sponsored by the California Pan-Ethnic Health Network (CPEHN). Version 1.1 sponsored by the Plastic Pollution Coalition.</comments>
   <civix>
     <namespace>CRM/Subscriptionhistory</namespace>
+    <format>23.02.1</format>
   </civix>
+  <mixins>
+    <mixin>mgd-php@1.0.0</mixin>
+    <mixin>smarty-v2@1.0.1</mixin>
+  </mixins>
+  <classloader>
+    <psr0 prefix="CRM_" path="."/>
+    <psr4 prefix="Civi\" path="Civi"/>
+  </classloader>
 </extension>
