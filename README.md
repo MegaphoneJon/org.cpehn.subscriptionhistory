@@ -1,3 +1,1 @@
-Install this extension in your CiviCRM extensions directory.
-
-To use, go to Administer menu > CiviReport > Create New Report from Template, then select "SubscriptionHistory".
+This repo is archived, the current version is at https://lab.civicrm.org/extensions/subscriptionhistory.
